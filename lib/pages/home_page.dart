@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../data.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -61,20 +62,22 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         Padding(
-          padding:
-              EdgeInsets.only(top: MediaQuery.of(_context).size.height * 0.03),
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(_context).size.height * 0.03,
+              bottom: MediaQuery.of(_context).size.height * 0.03),
           child: _locationBar(_context),
         ),
+        _articleList(_context),
       ],
     );
   }
 
   Widget _locationBar(BuildContext _context) {
     return Container(
-      height: MediaQuery.of(_context).size.height  *0.065,
+      height: MediaQuery.of(_context).size.height * 0.065,
       decoration: BoxDecoration(
           color: Color.fromRGBO(69, 69, 69, 1),
-          borderRadius: BorderRadius.circular(20)),
+          borderRadius: BorderRadius.circular(100)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.max,
@@ -86,20 +89,105 @@ class _HomePageState extends State<HomePage> {
             children: [
               Text(
                 l,
-                style: TextStyle(fontSize: 15, color: _isActive ? Colors.white : Colors.white54),
+                style: TextStyle(
+                    fontSize: 15,
+                    color: _isActive ? Colors.white : Colors.white54,
+                    fontFamily: 'Montserrat'),
               ),
-              _isActive ? 
-              Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
-                  color: Colors.redAccent,
-                ),
-                height: 5,
-                width: 30,
-              ): Container(),
+              _isActive
+                  ? Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.redAccent,
+                      ),
+                      height: 5,
+                      width: 30,
+                    )
+                  : Container(),
             ],
           );
         }).toList(),
       ),
+    );
+  }
+
+  Widget _articleList(BuildContext _context) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: articles.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(_context).size.height * 0.50),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Container(
+                height: MediaQuery.of(_context).size.height * 0.30,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(articles[index].image),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black38,
+                          spreadRadius: 2,
+                          blurRadius: 20,
+                          offset: Offset(0, 6))
+                    ]),
+                child: _articleInfoColumn(_context, index),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _articleInfoColumn(BuildContext _context, int _index) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(10, 10, 30, 30),
+          child: _authorInfoRow(_context, _index),
+        )
+      ],
+    );
+  }
+
+  Widget _authorInfoRow(BuildContext _context, int _index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          children: [
+            Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage('https://i.pravatar.cc/300'),
+                  ),
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2)),
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(articles[_index].author)
+
+              ],
+            )
+          ],
+        ),
+      ],
     );
   }
 }
