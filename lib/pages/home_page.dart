@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           return Padding(
             padding: EdgeInsets.only(
-                bottom: MediaQuery.of(_context).size.height * 0.50),
+                bottom: MediaQuery.of(_context).size.height * 0.05),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
               child: Container(
@@ -178,11 +178,23 @@ class _HomePageState extends State<HomePage> {
             ),
             Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(articles[_index].author)
-
+                Text(
+                  articles[_index].author,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '3 hours ago',
+                  style: TextStyle(
+                      color: Colors.white54,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w300),
+                ),
               ],
             )
           ],
