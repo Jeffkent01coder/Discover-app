@@ -116,28 +116,38 @@ class _HomePageState extends State<HomePage> {
       child: ListView.builder(
         itemCount: articles.length,
         itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(_context).size.height * 0.05),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: Container(
-                height: MediaQuery.of(_context).size.height * 0.30,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(articles[index].image),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black38,
-                          spreadRadius: 2,
-                          blurRadius: 20,
-                          offset: Offset(0, 6))
-                    ]),
-                child: _articleInfoColumn(_context, index),
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(_context).size.height * 0.05),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    height: MediaQuery.of(_context).size.height * 0.30,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(articles[index].image),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black38,
+                              spreadRadius: 2,
+                              blurRadius: 20,
+                              offset: Offset(0, 6))
+                        ]),
+                    child: _articleInfoColumn(_context, index),
+                  ),
+                ),
               ),
-            ),
+              Positioned(
+                bottom: 30,
+                left: MediaQuery.of(context).size.width * 0.10,
+                child: _socialInfoContainer(_context, index),
+              )
+            ],
           );
         },
       ),
@@ -153,7 +163,12 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: EdgeInsets.fromLTRB(10, 10, 30, 30),
           child: _authorInfoRow(_context, _index),
-        )
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+              30, MediaQuery.of(context).size.height * 0.05, 30, 0),
+          child: _detailInfoRow(_context, _index),
+        ),
       ],
     );
   }
@@ -176,30 +191,178 @@ class _HomePageState extends State<HomePage> {
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.white, width: 2)),
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  articles[_index].author,
+            Padding(
+              padding: EdgeInsets.only(left: 5),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    articles[_index].author,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  Text(
+                    '3 hours ago',
+                    style: TextStyle(
+                        color: Colors.white54,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w300),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Icon(
+              Icons.favorite,
+              color: Colors.red,
+              size: 20,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: Icon(
+                Icons.bookmark,
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _detailInfoRow(BuildContext _context, int _index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: Colors.white,
+          child: Icon(
+            Icons.play_arrow,
+            color: Colors.redAccent,
+            size: 30,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: MediaQuery.of(_context).size.width * 0.50,
+                child: Text(
+                  articles[_index].title,
+                  maxLines: 2,
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 15,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  '3 hours ago',
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 5,
+                  bottom: 3,
+                ),
+                child: Text(
+                  articles[_index].location,
                   style: TextStyle(
                       color: Colors.white54,
                       fontSize: 13,
                       fontWeight: FontWeight.w300),
                 ),
-              ],
-            )
-          ],
+              ),
+              _ratingWidget(_context, _index),
+            ],
+          ),
         ),
       ],
+    );
+  }
+
+  Widget _socialInfoContainer(BuildContext _context, int _index) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.07,
+      width: MediaQuery.of(context).size.width * 0.70,
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.favorite_border,
+                color: Colors.redAccent,
+              ),
+              Text(
+                articles[_index].likes.toString(),
+                style: TextStyle(color: Colors.redAccent),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Icon(
+                Icons.comment,
+                color: Colors.grey,
+              ),
+              Text(
+                articles[_index].comments.toString(),
+                style: TextStyle(color: Colors.grey),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Icon(
+                Icons.share,
+                color: Colors.grey,
+              ),
+              Text(
+                articles[_index].shares.toString(),
+                style: TextStyle(color: Colors.grey),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _ratingWidget(BuildContext context, int index) {
+    return Row(
+      children: List.generate(5, (currentIndex) {
+        double fillAmount = articles[index].rating - currentIndex;
+        Icon starIcon;
+
+        if (fillAmount >= 1) {
+          // Full star
+          starIcon = Icon(Icons.star, color: Colors.amber, size: 15);
+        } else if (fillAmount >= 0.5) {
+          // Half star
+          starIcon = Icon(Icons.star_half, color: Colors.amber, size: 15);
+        } else {
+          // Empty star
+          starIcon = Icon(Icons.star_border, color: Colors.amber, size: 15);
+        }
+
+        return starIcon;
+      }),
     );
   }
 }
