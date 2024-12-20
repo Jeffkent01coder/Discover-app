@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
       mainAxisSize: MainAxisSize.max,
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(10, 10, 30, 30),
+          padding: EdgeInsets.fromLTRB(10, 10, 30, 0),
           child: _authorInfoRow(_context, _index),
         ),
         Padding(
@@ -247,6 +247,7 @@ class _HomePageState extends State<HomePage> {
         FloatingActionButton(
           onPressed: () {},
           backgroundColor: Colors.white,
+          shape: CircleBorder(),
           child: Icon(
             Icons.play_arrow,
             color: Colors.redAccent,
@@ -271,18 +272,15 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 5,
-                  bottom: 3,
-                ),
-                child: Text(
-                  articles[_index].location,
-                  style: TextStyle(
-                      color: Colors.white54,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w300),
-                ),
+              Padding(padding: EdgeInsets.only(top: 0, bottom: 0),
+              child: 
+              Text(
+                articles[_index].location,
+                style: TextStyle(
+                    color: Colors.white54,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w300),
+              ),
               ),
               _ratingWidget(_context, _index),
             ],

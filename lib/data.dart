@@ -26,7 +26,7 @@ List<Article> articles = [
       4),
   Article(
       'Known as the sleepless town for obvious reasons',
-      'https://c4.wallpaperflare.com/wallpaper/611/838/413/spiderman-hd-4k-superheroes-wallpaper-preview.jpg',
+      'https://c4.wallpaperflare.com/wallpaper/840/954/346/dark-night-rain-car-wallpaper-preview.jpg',
       300,
       50000,
       true,
